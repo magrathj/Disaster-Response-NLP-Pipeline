@@ -22,7 +22,7 @@ url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-
 
 
 def load_data():
-    df = pd.read_csv('Corporate-messaging-DFE.csv', encoding='latin-1')
+    df = pd.read_csv('Corporate-Messaging-DFE/Corporate-messaging-DFE.csv', encoding='latin-1')
     df = df[(df["category:confidence"] == 1) & (df['category'] != 'Exclude')]
     X = df.text.values
     y = df.category.values
