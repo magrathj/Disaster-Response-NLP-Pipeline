@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+
+from sklearn.pipeline import Pipeline
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -47,27 +49,24 @@ def display_results(y_test, y_pred):
     print("Confusion Matrix:\n", confusion_mat)
     print("Accuracy:", accuracy)
 
-
 def main():
     X, y = load_data()
     X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-    vect = CountVectorizer(tokenizer=tokenize)
-    tfidf = TfidfTransformer()
-    clf = RandomForestClassifier()
+    pipeline = Pipeline([
+        ('vect', CountVectorizer(tokenizer=tokenize)),
+        ('tfidf', TfidfTransformer()),
+        ('clf', RandomForestClassifier())
+    ])
 
     # train classifier
-    X_train_counts = vect.fit_transform(X_train)
-    X_train_tfidf = tfidf.fit_transform(X_train_counts)
-    clf.fit(X_train_tfidf, y_train)
+    pipeline.fit(X_train, y_train)
 
     # predict on test data
-    X_test_counts = vect.transform(X_test)
-    X_test_tfidf = tfidf.transform(X_test_counts)
-    y_pred = clf.predict(X_test_tfidf)
+    y_pred = pipeline.predict(X_test)
 
     # display results
     display_results(y_test, y_pred)
-
+    
 
 main()
