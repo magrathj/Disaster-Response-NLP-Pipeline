@@ -1,5 +1,5 @@
 import nltk
-nltk.download(['punkt', 'wordnet'])
+nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 
 import re
 import numpy as np
@@ -7,11 +7,14 @@ import pandas as pd
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+
+from custom_transformer import StartingVerbExtractor
 
 url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 
@@ -40,6 +43,24 @@ def tokenize(text):
     return clean_tokens
 
 
+def model_pipeline():
+    pipeline = Pipeline([
+        ('features', FeatureUnion([
+
+            ('text_pipeline', Pipeline([
+                ('vect', CountVectorizer(tokenizer=tokenize)),
+                ('tfidf', TfidfTransformer())
+            ])),
+
+            ('starting_verb', StartingVerbExtractor())
+        ])),
+
+        ('clf', RandomForestClassifier())
+    ])
+
+    return pipeline
+
+
 def display_results(y_test, y_pred):
     labels = np.unique(y_pred)
     confusion_mat = confusion_matrix(y_test, y_pred, labels=labels)
@@ -49,24 +70,15 @@ def display_results(y_test, y_pred):
     print("Confusion Matrix:\n", confusion_mat)
     print("Accuracy:", accuracy)
 
+
 def main():
     X, y = load_data()
     X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-    pipeline = Pipeline([
-        ('vect', CountVectorizer(tokenizer=tokenize)),
-        ('tfidf', TfidfTransformer()),
-        ('clf', RandomForestClassifier())
-    ])
+    model = model_pipeline()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
 
-    # train classifier
-    pipeline.fit(X_train, y_train)
-
-    # predict on test data
-    y_pred = pipeline.predict(X_test)
-
-    # display results
     display_results(y_test, y_pred)
-    
 
 main()
