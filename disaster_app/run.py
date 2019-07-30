@@ -2,6 +2,9 @@ import json
 import plotly
 import pandas as pd
 
+import nltk
+print("hey")
+
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
