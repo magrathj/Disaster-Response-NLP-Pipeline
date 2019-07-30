@@ -13,7 +13,7 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
-
+from sqlalchemy.engine import reflection
 
 app = Flask(__name__)
 
@@ -29,11 +29,15 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
+print("*******************************")
+engine = create_engine('sqlite:///disaster_app/DisasterResponse.db')
+insp = reflection.Inspector.from_engine(engine)
+print(insp.get_table_names())
+print("********engine************")
 df = pd.read_sql_table('DisasterMessages', engine)
-
+print("*****************************")
 # load model
-model = joblib.load("../models/classifier.pkl")
+model = joblib.load("disaster_app/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
