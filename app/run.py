@@ -12,7 +12,7 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
 
-#app = Flask(__name__)
+app = Flask(__name__)
 
 def tokenize(text):
     tokens = word_tokenize(text)
@@ -34,8 +34,8 @@ model = joblib.load("../models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['POST', 'GET'])
+@app.route('/index', methods=['POST', 'GET'])
 def index():
     
     # extract data needed for visuals
@@ -75,7 +75,7 @@ def index():
 
 
 # web page that handles user query and displays model results
-@app.route('/go')
+@app.route('/go', methods=['POST', 'GET'])
 def go():
     # save user input in query
     query = request.args.get('query', '') 
@@ -91,10 +91,3 @@ def go():
         classification_result=classification_results
     )
 
-
-def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
-
-
-if __name__ == '__main__':
-    main()
