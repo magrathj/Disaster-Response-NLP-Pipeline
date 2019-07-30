@@ -37,7 +37,7 @@ print("********engine************")
 df = pd.read_sql_table('DisasterMessages', engine)
 print("*****************************")
 # load model
-model = joblib.load("disaster_app/classifier.pkl")
+model = joblib.load("models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
