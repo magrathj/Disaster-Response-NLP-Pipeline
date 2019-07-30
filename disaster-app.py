@@ -1,1 +1,1 @@
-from disaster-app import app
+from disaster_app import app

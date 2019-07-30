@@ -2,4 +2,4 @@ from flask import Flask
 
 app = Flask(__name__)
 
-from disaster-app import run
+from disaster_app import run
