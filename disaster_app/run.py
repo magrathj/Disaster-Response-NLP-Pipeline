@@ -19,11 +19,6 @@ from sqlalchemy.engine import reflection
 app = Flask(__name__)
 
 
-print("index")
-# index webpage displays cool visuals and receives user input text for model
-@app.route('/', methods=['POST', 'GET'])
-@app.route('/index', methods=['POST', 'GET'])
-def index():    
-    # render web page with plotly graphs
-    return render_template('master.html')
-
+@app.route('/')
+def index():
+    return "Hello, World!"
