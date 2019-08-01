@@ -14,12 +14,12 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 from sqlalchemy.engine import reflection
-#from functions import tokenize
+
 
 app = Flask(__name__)
 
 
-
+print("index")
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index', methods=['POST', 'GET'])
