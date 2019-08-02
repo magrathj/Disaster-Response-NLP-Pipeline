@@ -1,3 +1,5 @@
+from disaster_app import app
+
 import json
 import plotly
 import pandas as pd
@@ -18,5 +20,6 @@ from sqlalchemy.engine import reflection
 
 
 @app.route('/')
+@app.route('/index', methods=['POST', 'GET'])
 def index():
     return "Hello, World!"
