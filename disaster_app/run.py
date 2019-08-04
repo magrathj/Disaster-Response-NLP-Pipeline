@@ -1,5 +1,5 @@
 
-from disaster_app import app
+#from disaster_app import app
 
 
 import os
@@ -38,9 +38,7 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
 
-from disaster_app.functions import tokenize
-
-
+#from disaster_app.functions import tokenize
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
 
@@ -60,6 +58,16 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
 
+def tokenize(text):
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens
 
 # load data
 engine = create_engine('sqlite:///disaster_app/DisasterResponse.db')
@@ -69,7 +77,7 @@ print (engine.table_names())
 df = pd.read_sql_table('DisasterMessages', engine)
 
 # load model
-#model = joblib.load("disaster_app/classifier.pkl")
+model = joblib.load("disaster_app/classifier.pkl")
 
 print("here")
 
