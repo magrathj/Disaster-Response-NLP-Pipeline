@@ -76,9 +76,7 @@ def main():
         save_data(df, database_filepath)        
         print('Cleaned data saved to database!')    
     else:
-        print('Example: python process_data.py '\
-              'disaster_messages.csv disaster_categories.csv '\
-              'DisasterResponse.db')
+        print('Example: python process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db')
 
 
 if __name__ == '__main__':
