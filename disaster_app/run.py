@@ -82,7 +82,7 @@ df = pd.read_sql_table('DisasterMessages', engine)
 
 # load model
 #model = joblib.load("disaster_app/classifier.pkl")
-model = pickle.load( open('disaster_app/classifier.pkl', 'rb'))
+#model = pickle.load( open('disaster_app/classifier.pkl', 'rb'))
 
 print("here")
 
