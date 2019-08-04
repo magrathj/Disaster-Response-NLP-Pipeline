@@ -23,7 +23,6 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 from sqlalchemy.engine import reflection
 
-from disaster_app.functions import tokenize
 
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize, sent_tokenize
@@ -37,6 +36,11 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+
+
+from disaster_app.functions import tokenize
+
+
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
 
