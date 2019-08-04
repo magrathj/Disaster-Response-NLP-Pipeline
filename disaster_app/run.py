@@ -22,11 +22,11 @@ from sqlalchemy.engine import reflection
 
 
 # load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
+engine = create_engine('sqlite:///DisasterResponse.db')
 df = pd.read_sql_table('DisasterMessages', engine)
 
 # load model
-model = joblib.load("../models/classifier.pkl")
+model = joblib.load("classifier.pkl")
 
 print("here")
 
