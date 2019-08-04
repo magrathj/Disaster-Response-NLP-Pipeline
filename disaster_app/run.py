@@ -25,6 +25,7 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 from sqlalchemy.engine import reflection
+import pickle
 
 
 from nltk.stem import WordNetLemmatizer
@@ -81,6 +82,7 @@ df = pd.read_sql_table('DisasterMessages', engine)
 
 # load model
 #model = joblib.load("disaster_app/classifier.pkl")
+model = pickle.load('disaster_app/classifier.pkl')
 
 print("here")
 
