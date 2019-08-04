@@ -27,5 +27,5 @@ from sqlalchemy.engine import reflection
 def index():
    
     # render web page with plotly graphs
-    return 'hello'
+    return render_template('master.html')
 
