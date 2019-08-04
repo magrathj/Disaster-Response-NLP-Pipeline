@@ -1,5 +1,5 @@
 
-#from disaster_app import app
+from disaster_app import app
 
 
 import os
