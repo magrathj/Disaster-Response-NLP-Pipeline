@@ -80,7 +80,7 @@ print (engine.table_names())
 df = pd.read_sql_table('DisasterMessages', engine)
 
 # load model
-model = joblib.load("disaster_app/classifier.pkl")
+#model = joblib.load("disaster_app/classifier.pkl")
 
 print("here")
 
@@ -90,7 +90,65 @@ print("here")
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index', methods=['POST', 'GET'])
 def index():
-   
+   def index():
+    
+    # extract data needed for visuals
+    # TODO: Below is an example - modify to extract data for your own visuals
+    genre_counts = df.groupby('genre').count()['message']
+    genre_names = list(genre_counts.index)
+    
+    category_names = df.iloc[:,4:].columns
+    category_boolean = (df.iloc[:,4:] != 0).sum().values
+    
+    
+    # create visuals
+    # TODO: Below is an example - modify to create your own visuals
+    graphs = [
+            # GRAPH 1 - genre graph
+        {
+            'data': [
+                Bar(
+                    x=genre_names,
+                    y=genre_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Genres',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                }
+            }
+        },
+            # GRAPH 2 - category graph    
+        {
+            'data': [
+                Bar(
+                    x=category_names,
+                    y=category_boolean
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category",
+                    'tickangle': 35
+                }
+            }
+        }
+    ]
+    
+    # encode plotly graphs in JSON
+    ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    
     # render web page with plotly graphs
-    return render_template('master.html')
+    return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
