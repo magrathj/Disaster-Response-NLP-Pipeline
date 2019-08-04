@@ -1,3 +1,9 @@
+
+from sklearn.base import BaseEstimator, TransformerMixin
+
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+
 def tokenize(text):
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()

@@ -85,28 +85,30 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
 
-    
-def build_model():
-    '''
-    Build a ML pipeline using ifidf, random forest, and gridsearch
-    Input: None
-    Output:
-        Results of GridSearchCV
-    '''
-    print("build_model")
-    pipeline = Pipeline([
-                        ('vect', CountVectorizer(tokenizer=tokenize)),
-                        ('tfidf', TfidfTransformer()),
-                        ('clf', MultiOutputClassifier(RandomForestClassifier()))
-                        ])
 
-    parameters = {'clf__estimator__n_estimators': [50, 100],
-                  'clf__estimator__min_samples_split': [2, 3, 4],
-                  'clf__estimator__criterion': ['entropy', 'gini']
-                 }
-    cv = GridSearchCV(pipeline, param_grid=parameters)
+
+def build_model():
+    """
+    Build Model function
     
-    return cv
+    This function output is a Scikit ML Pipeline that process text messages
+    according to NLP best-practice and apply a classifier.
+    """
+    model = Pipeline([
+        ('features', FeatureUnion([
+
+            ('text_pipeline', Pipeline([
+                ('vect', CountVectorizer(tokenizer=tokenize)),
+                ('tfidf', TfidfTransformer())
+            ])),
+
+            ('starting_verb', StartingVerbExtractor())
+        ])),
+
+        ('clf', MultiOutputClassifier(AdaBoostClassifier()))
+    ])
+
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
@@ -152,7 +154,7 @@ def main():
         save_model(model, model_filepath)
 
     else:
-        print('Example: python train_classifier.py ../data/DisasterResponse.db classifier.pkl')
+        print('Example: python train_classifier.py ../data/DisasterResponse.db disaster_app/classifier.pkl')
 
 
 if __name__ == '__main__':
