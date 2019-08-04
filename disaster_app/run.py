@@ -69,7 +69,7 @@ print (engine.table_names())
 df = pd.read_sql_table('DisasterMessages', engine)
 
 # load model
-model = joblib.load("disaster_app/classifier.pkl")
+#model = joblib.load("disaster_app/classifier.pkl")
 
 print("here")
 
