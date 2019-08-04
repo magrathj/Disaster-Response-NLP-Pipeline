@@ -7,6 +7,9 @@ import json
 import plotly
 import pandas as pd
 
+import platform
+print(platform.architecture())
+
 import nltk
 arr = os.listdir()
 
