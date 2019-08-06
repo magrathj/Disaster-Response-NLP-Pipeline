@@ -26,6 +26,7 @@ import sys
 from sqlalchemy import create_engine
 import pickle
 from sqlalchemy import create_engine
+from utils import tokenize, StartingVerbExtractor
 
 def load_data(database_filepath):
     '''
@@ -45,45 +46,6 @@ def load_data(database_filepath):
     category_names = list(df.columns[4:])
 
     return X, Y, category_names
-
-
-def tokenize(text):
-    '''
-    Tokenize and clean text
-    Input:
-        text: original message text
-    Output:
-        clean_tokens: Tokenized, cleaned, and lemmatized text
-    '''
-    print("tokenize")
-    tokens = word_tokenize(text)
-    lemmatizer = WordNetLemmatizer()
-    
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-
-    return clean_tokens
-
-
-class StartingVerbExtractor(BaseEstimator, TransformerMixin):
-
-    def starting_verb(self, text):
-        sentence_list = nltk.sent_tokenize(text)
-        for sentence in sentence_list:
-            pos_tags = nltk.pos_tag(tokenize(sentence))
-            first_word, first_tag = pos_tags[0]
-            if first_tag in ['VB', 'VBP'] or first_word == 'RT':
-                return True
-        return False
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        X_tagged = pd.Series(X).apply(self.starting_verb)
-        return pd.DataFrame(X_tagged)
 
 
 
