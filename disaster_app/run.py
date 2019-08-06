@@ -42,7 +42,7 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
 
-from disaster_app.utils import tokenize
+from utils import tokenize, StartingVerbExtractor
 
 
 # load data
